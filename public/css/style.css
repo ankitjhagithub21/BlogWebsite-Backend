@@ -3,6 +3,15 @@
 ::-webkit-scrollbar{
     display: none;
 }
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
 body{
     font-family: 'Noto Sans', sans-serif;
 }
@@ -25,4 +34,7 @@ header{
 }
 section{
     min-height: 100vh;
+}
+.logo{
+    width: 50px;
 }
