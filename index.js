@@ -1,24 +1,36 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const app = express()
+const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+const app = express();
+const mongoDb = require('./conn');
+const router = require('./routes/blogRoute');
 
-const mongoDb = require('./conn')
-const router = require("./routes/blogRoute")
-dotenv.config()
+dotenv.config();
+const port = process.env.PORT || 8080;
+const dburl = process.env.DB_URI;
 
-const port = process.env.PORT || 8080
-const dburl = process.env.DB_URI
-//database connect
-mongoDb(dburl)
+const staticPath = path.join(__dirname, 'public');
 
-//middlewares
-app.use(express.json())
-app.use('/api',router)
+// Database connect
+mongoDb(dburl);
 
-app.get("/",(req,res)=>{
-    res.send({"message":"Hello world"})
-})
+// Middlewares
+app.use(express.json());
+app.use('/api', router);
+app.use(express.static(staticPath));
 
-app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`)
-})
+app.get('/', (req, res) => {
+  res.sendFile(path.join(staticPath, 'index.html'));
+});
+
+app.get('/create', (req, res) => {
+  res.sendFile(path.join(staticPath, 'create.html'));
+});
+
+app.get('/blogs/:id', (req, res) => {
+  res.sendFile(path.join(staticPath, 'readblog.html'));
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
